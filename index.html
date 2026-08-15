@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Prévisions fines Vercors/Diois</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+  header { background: #1a3c5e; color: white; padding: 1rem; text-align: center; }
+  header h1 { margin: 0; font-size: 1.4rem; }
+  header p { margin: 0.3rem 0 0; font-size: 0.85rem; opacity: 0.85; }
+  .controls { text-align: center; padding: 0.8rem; background: white; }
+  .controls button {
+    padding: 0.5rem 1.2rem; margin: 0 0.3rem; border: 1px solid #1a3c5e;
+    background: white; color: #1a3c5e; border-radius: 4px; cursor: pointer; font-weight: bold;
+  }
+  .controls button.active { background: #1a3c5e; color: white; }
+  #map { height: 65vh; width: 100%; }
+  table { width: 100%; border-collapse: collapse; background: white; margin-top: 0.5rem; }
+  th, td { padding: 0.5rem 0.8rem; text-align: left; border-bottom: 1px solid #ddd; font-size: 0.9rem; }
+  th { background: #eef2f6; }
+  td.temp { text-align: right; font-variant-numeric: tabular-nums; }
+  .legend { font-size: 0.8rem; color: #555; text-align: center; padding: 0.3rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Prévisions fines Vercors / Diois</h1>
+  <p id="date-info">Chargement…</p>
+</header>
+
+<div class="controls">
+  <button id="btn-tn" class="active">Température min (nuit)</button>
+  <button id="btn-tx">Température max (après-midi)</button>
+</div>
+
+<div id="map"></div>
+<p class="legend">Modèle basé sur ICON-CH1, corrigé par observations locales (Infoclimat + station personnelle) et topographie fine.</p>
+
+<table id="tableau">
+  <thead>
+    <tr><th>Lieu</th><th>TN prévue</th><th>TX prévue</th></tr>
+  </thead>
+  <tbody id="tableau-body">
+    <tr><td colspan="3">Chargement du tableau…</td></tr>
+  </tbody>
+</table>
+
+<script>
+const map = L.map('map').setView([44.95, 5.35], 10);
+L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+  maxZoom: 17,
+  attribution: '&copy; OpenStreetMap contributors, SRTM | Style: &copy; OpenTopoMap'
+}).addTo(map);
+
+let overlayTN, overlayTX;
+
+fetch('bounds.json')
+  .then(r => r.json())
+  .then(bounds => {
+    const bTN = [[bounds.tn.lat_min, bounds.tn.lon_min], [bounds.tn.lat_max, bounds.tn.lon_max]];
+    const bTX = [[bounds.tx.lat_min, bounds.tx.lon_min], [bounds.tx.lat_max, bounds.tx.lon_max]];
+
+    overlayTN = L.imageOverlay('carte_tn.png', bTN, {opacity: 0.75}).addTo(map);
+    overlayTX = L.imageOverlay('carte_tx.png', bTX, {opacity: 0.75});
+
+    map.fitBounds(bTN);
+  })
+  .catch(() => {
+    document.getElementById('date-info').textContent = "Erreur : bounds.json introuvable";
+  });
+
+document.getElementById('btn-tn').addEventListener('click', () => {
+  if (overlayTX && map.hasLayer(overlayTX)) map.removeLayer(overlayTX);
+  if (overlayTN) overlayTN.addTo(map);
+  document.getElementById('btn-tn').classList.add('active');
+  document.getElementById('btn-tx').classList.remove('active');
+});
+
+document.getElementById('btn-tx').addEventListener('click', () => {
+  if (overlayTN && map.hasLayer(overlayTN)) map.removeLayer(overlayTN);
+  if (overlayTX) overlayTX.addTo(map);
+  document.getElementById('btn-tx').classList.add('active');
+  document.getElementById('btn-tn').classList.remove('active');
+});
+
+fetch('tableau_prevision.json')
+  .then(r => r.json())
+  .then(data => {
+    const tbody = document.getElementById('tableau-body');
+    tbody.innerHTML = '';
+    data.sort((a, b) => a.tn_prevue - b.tn_prevue);
+    data.forEach(row => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${row.lieu}</td><td class="temp">${row.tn_prevue.toFixed(1)}°C</td><td class="temp">${row.tx_prevue.toFixed(1)}°C</td>`;
+      tbody.appendChild(tr);
+    });
+  })
+  .catch(() => {
+    document.getElementById('tableau-body').innerHTML = '<tr><td colspan="3">tableau_prevision.json introuvable</td></tr>';
+  });
+
+const dateInfo = document.getElementById('date-info');
+const maintenant = new Date();
+dateInfo.textContent = "Mis à jour le " + maintenant.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'});
+</script>
+
+</body>
+</html>
