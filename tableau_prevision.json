@@ -1,62 +1,62 @@
 [
   {
     "lieu": "Châtillon-en-Diois - Cirque d'Archiane",
-    "tn_prevue": 14.44616504740905,
-    "tx_prevue": 30.028459867390968
+    "tn_prevue": 14.24665666277605,
+    "tx_prevue": 32.128365888407004
   },
   {
     "lieu": "Marignac-en-Diois",
-    "tn_prevue": 16.289314346663662,
-    "tx_prevue": 35.69659434035468
+    "tn_prevue": 12.873106441767458,
+    "tx_prevue": 35.596204796261254
   },
   {
     "lieu": "Saint-Julien-en-Quint",
-    "tn_prevue": 18.033877829630146,
-    "tx_prevue": 35.70230983832507
+    "tn_prevue": 15.741712614131442,
+    "tx_prevue": 34.70443870342021
   },
   {
     "lieu": "La Chapelle-en-Vercors -  Combe-de-l'Oscence",
-    "tn_prevue": 7.107314899408321,
-    "tx_prevue": 32.482338598343794
+    "tn_prevue": 6.371952849651734,
+    "tx_prevue": 31.982333241904126
   },
   {
     "lieu": "La-Chapelle-en-Vercors - Combe de Darbounouse",
-    "tn_prevue": 4.473419092351733,
-    "tx_prevue": 28.68910786429959
+    "tn_prevue": 2.754314850319151,
+    "tx_prevue": 28.48905401500491
   },
   {
     "lieu": "Lans-en-Vercors - Les Bruyères",
-    "tn_prevue": 10.661073940992143,
-    "tx_prevue": 32.14120453281226
+    "tn_prevue": 10.239985669986025,
+    "tx_prevue": 31.74115774283338
   },
   {
     "lieu": "Lans-en-Vercors - Les Allières",
-    "tn_prevue": 18.06569930066446,
-    "tx_prevue": 28.18763299765518
+    "tn_prevue": 16.905310376359864,
+    "tx_prevue": 27.387956829622464
   },
   {
     "lieu": "Rochechinard",
-    "tn_prevue": 19.71561685647879,
-    "tx_prevue": 35.63590198087111
+    "tn_prevue": 20.696112206216235,
+    "tx_prevue": 34.535905510511114
   },
   {
     "lieu": "Peyrus",
-    "tn_prevue": 22.116659500031815,
-    "tx_prevue": 36.32280940027409
+    "tn_prevue": 22.78349352096391,
+    "tx_prevue": 36.322807907628814
   },
   {
     "lieu": "Méaudre",
-    "tn_prevue": 11.685211179187391,
-    "tx_prevue": 30.83154152643122
+    "tn_prevue": 10.95198080888193,
+    "tx_prevue": 30.831537643698763
   },
   {
     "lieu": "Crête de la Moucherolle - Villard de Lans",
-    "tn_prevue": 16.433693453615,
-    "tx_prevue": 21.622463241404674
+    "tn_prevue": 15.28582271866531,
+    "tx_prevue": 20.72290583247499
   },
   {
     "lieu": "Doline de Chaud Clapier",
-    "tn_prevue": 4.280674452087748,
-    "tx_prevue": 29.64978847410348
+    "tn_prevue": 4.464751461187145,
+    "tx_prevue": 28.850015576515336
   }
 ]
