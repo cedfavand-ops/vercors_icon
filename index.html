@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
   body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
   header { background: #1a3c5e; color: white; padding: 1rem; text-align: center; }
@@ -17,7 +18,14 @@
     background: white; color: #1a3c5e; border-radius: 4px; cursor: pointer; font-weight: bold;
   }
   .controls button.active { background: #1a3c5e; color: white; }
-  #map { height: 65vh; width: 100%; }
+  #map { height: 65vh; width: 100%; position: relative; }
+  .hover-value {
+    position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: white;
+    padding: 0.4rem 0.7rem; border-radius: 4px; font-size: 0.85rem; z-index: 1000; pointer-events: none;
+    display: none;
+  }
+  .isoligne { fill: none; stroke: rgba(0,0,0,0.35); stroke-width: 0.7; }
+  .isoligne-label { font-size: 0.65rem; fill: #333; }
   table { width: 100%; border-collapse: collapse; background: white; margin-top: 0.5rem; }
   th, td { padding: 0.5rem 0.8rem; text-align: left; border-bottom: 1px solid #ddd; font-size: 0.9rem; }
   th { background: #eef2f6; cursor: pointer; user-select: none; }
@@ -35,11 +43,15 @@
 </header>
 
 <div class="controls">
-  <button id="btn-tn" class="active">Température min (nuit)</button>
-  <button id="btn-tx">Température max (après-midi)</button>
+  <button id="btn-tn" class="active">Température min</button>
+  <button id="btn-tx">Température max</button>
 </div>
+<p class="legend" id="date-tn" style="display:block;"></p>
+<p class="legend" id="date-tx" style="display:none;"></p>
 
-<div id="map"></div>
+<div id="map">
+  <div class="hover-value" id="hover-box"></div>
+</div>
 <p class="legend">Modèle basé sur ICON-CH1, corrigé par observations locales (Infoclimat + station personnelle) et topographie fine.</p>
 
 <table id="tableau">
@@ -56,6 +68,18 @@
 </table>
 
 <script>
+// ============================================================
+// Dates dynamiques
+// ============================================================
+const moisFr = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
+const aujourd = new Date();
+const demain = new Date(aujourd);
+demain.setDate(demain.getDate() + 1);
+document.getElementById('date-tn').textContent =
+  `Nuit du ${aujourd.getDate()} au ${demain.getDate()} ${moisFr[demain.getMonth()]}`;
+document.getElementById('date-tx').textContent =
+  `Après-midi du ${demain.getDate()} ${moisFr[demain.getMonth()]}`;
+
 const map = L.map('map').setView([44.95, 5.35], 10);
 L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
   maxZoom: 17,
@@ -63,27 +87,116 @@ L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 let overlayTN, overlayTX;
+let grilleTN, grilleTX;
+let isolignesLayer = null;
+let coucheActive = 'tn';
 
 fetch('bounds.json')
   .then(r => r.json())
   .then(bounds => {
     const bTN = [[bounds.tn.lat_min, bounds.tn.lon_min], [bounds.tn.lat_max, bounds.tn.lon_max]];
     const bTX = [[bounds.tx.lat_min, bounds.tx.lon_min], [bounds.tx.lat_max, bounds.tx.lon_max]];
-
     overlayTN = L.imageOverlay('carte_tn.png', bTN, {opacity: 0.75}).addTo(map);
     overlayTX = L.imageOverlay('carte_tx.png', bTX, {opacity: 0.75});
-
     map.fitBounds(bTN);
-  })
-  .catch(() => {
-    document.getElementById('date-info').textContent = "Erreur : bounds.json introuvable";
   });
+
+// ============================================================
+// Charger les grilles de valeurs (survol + isolignes)
+// ============================================================
+Promise.all([
+  fetch('grille_tn.json').then(r => r.json()),
+  fetch('grille_tx.json').then(r => r.json())
+]).then(([gtn, gtx]) => {
+  grilleTN = gtn;
+  grilleTX = gtx;
+  dessinerIsolignes();
+});
+
+function valeurGrille(grille, lat, lon) {
+  const b = grille.bounds;
+  if (lat < b.lat_min || lat > b.lat_max || lon < b.lon_min || lon > b.lon_max) return null;
+  const col = Math.floor(((lon - b.lon_min) / (b.lon_max - b.lon_min)) * grille.width);
+  const row = Math.floor(((b.lat_max - lat) / (b.lat_max - b.lat_min)) * grille.height);
+  if (row < 0 || row >= grille.height || col < 0 || col >= grille.width) return null;
+  return grille.values[row][col];
+}
+
+// Survol de la carte : afficher la valeur
+const hoverBox = document.getElementById('hover-box');
+map.on('mousemove', (e) => {
+  const grille = coucheActive === 'tn' ? grilleTN : grilleTX;
+  if (!grille) return;
+  const v = valeurGrille(grille, e.latlng.lat, e.latlng.lng);
+  if (v === null) {
+    hoverBox.style.display = 'none';
+  } else {
+    hoverBox.style.display = 'block';
+    hoverBox.textContent = `${v.toFixed(1)}°C`;
+  }
+});
+map.on('mouseout', () => { hoverBox.style.display = 'none'; });
+
+// ============================================================
+// Isolignes tous les 1°C (calcul vectoriel via d3-contour)
+// ============================================================
+function gridToLatLng(x, y, grille) {
+  const b = grille.bounds;
+  const lon = b.lon_min + (x / grille.width) * (b.lon_max - b.lon_min);
+  const lat = b.lat_max - (y / grille.height) * (b.lat_max - b.lat_min);
+  return [lat, lon];
+}
+
+function dessinerIsolignes() {
+  if (isolignesLayer) { map.removeLayer(isolignesLayer); }
+
+  const grille = coucheActive === 'tn' ? grilleTN : grilleTX;
+  if (!grille) return;
+
+  const values = new Float64Array(grille.width * grille.height);
+  let vmin = Infinity, vmax = -Infinity;
+  for (let row = 0; row < grille.height; row++) {
+    for (let col = 0; col < grille.width; col++) {
+      const v = grille.values[row][col];
+      const idx = row * grille.width + col;
+      values[idx] = (v === null) ? NaN : v;
+      if (v !== null) { if (v < vmin) vmin = v; if (v > vmax) vmax = v; }
+    }
+  }
+
+  const seuils = [];
+  for (let t = Math.ceil(vmin); t <= Math.floor(vmax); t += 1) seuils.push(t);
+
+  const contourGen = d3.contours().size([grille.width, grille.height]).thresholds(seuils);
+  const contours = contourGen(values);
+
+  const groupe = L.layerGroup();
+
+  contours.forEach(feature => {
+    feature.coordinates.forEach(polygon => {
+      polygon.forEach(ring => {
+        const latlngs = ring.map(([x, y]) => gridToLatLng(x, y, grille));
+        const isEntier = Math.round(feature.value) % 5 === 0;
+        L.polyline(latlngs, {
+          color: '#333', weight: isEntier ? 1.1 : 0.5,
+          opacity: isEntier ? 0.55 : 0.3
+        }).addTo(groupe);
+      });
+    });
+  });
+
+  isolignesLayer = groupe.addTo(map);
+}
 
 document.getElementById('btn-tn').addEventListener('click', () => {
   if (overlayTX && map.hasLayer(overlayTX)) map.removeLayer(overlayTX);
   if (overlayTN) overlayTN.addTo(map);
   document.getElementById('btn-tn').classList.add('active');
   document.getElementById('btn-tx').classList.remove('active');
+  document.getElementById('date-tn').style.display = 'block';
+  document.getElementById('date-tx').style.display = 'none';
+  coucheActive = 'tn';
+  dessinerIsolignes();
 });
 
 document.getElementById('btn-tx').addEventListener('click', () => {
@@ -91,6 +204,10 @@ document.getElementById('btn-tx').addEventListener('click', () => {
   if (overlayTX) overlayTX.addTo(map);
   document.getElementById('btn-tx').classList.add('active');
   document.getElementById('btn-tn').classList.remove('active');
+  document.getElementById('date-tn').style.display = 'none';
+  document.getElementById('date-tx').style.display = 'block';
+  coucheActive = 'tx';
+  dessinerIsolignes();
 });
 
 // Palette "Turbo" simplifiée (approximation par points de contrôle, interpolée)
@@ -166,8 +283,7 @@ fetch('tableau_prevision.json')
   });
 
 const dateInfo = document.getElementById('date-info');
-const maintenant = new Date();
-dateInfo.textContent = "Mis à jour le " + maintenant.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'});
+dateInfo.textContent = "Généré le " + aujourd.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'}) + " vers 18h30";
 </script>
 
 </body>
