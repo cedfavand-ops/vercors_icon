@@ -20,8 +20,10 @@
   #map { height: 65vh; width: 100%; }
   table { width: 100%; border-collapse: collapse; background: white; margin-top: 0.5rem; }
   th, td { padding: 0.5rem 0.8rem; text-align: left; border-bottom: 1px solid #ddd; font-size: 0.9rem; }
-  th { background: #eef2f6; }
-  td.temp { text-align: right; font-variant-numeric: tabular-nums; }
+  th { background: #eef2f6; cursor: pointer; user-select: none; }
+  th:hover { background: #dde5ec; }
+  th.sorted::after { content: " ▾"; font-size: 0.7rem; }
+  td.temp { text-align: right; font-variant-numeric: tabular-nums; font-weight: bold; color: #fff; text-shadow: 0 0 2px rgba(0,0,0,0.5); }
   .legend { font-size: 0.8rem; color: #555; text-align: center; padding: 0.3rem; }
 </style>
 </head>
@@ -42,7 +44,11 @@
 
 <table id="tableau">
   <thead>
-    <tr><th>Lieu</th><th>TN prévue</th><th>TX prévue</th></tr>
+    <tr>
+      <th data-key="lieu">Lieu</th>
+      <th data-key="tn_prevue" class="sorted">TN prévue</th>
+      <th data-key="tx_prevue">TX prévue</th>
+    </tr>
   </thead>
   <tbody id="tableau-body">
     <tr><td colspan="3">Chargement du tableau…</td></tr>
@@ -87,17 +93,73 @@ document.getElementById('btn-tx').addEventListener('click', () => {
   document.getElementById('btn-tn').classList.remove('active');
 });
 
+// Palette "Turbo" simplifiée (approximation par points de contrôle, interpolée)
+const turboStops = [
+  [0.00,[48,18,59]],[0.10,[70,84,190]],[0.20,[54,140,225]],[0.30,[38,188,196]],
+  [0.40,[80,220,120]],[0.50,[170,230,60]],[0.60,[230,210,50]],[0.70,[250,150,40]],
+  [0.80,[230,80,30]],[0.90,[170,30,30]],[1.00,[110,10,10]]
+];
+function turboColor(t) {
+  t = Math.max(0, Math.min(1, t));
+  for (let i = 0; i < turboStops.length - 1; i++) {
+    const [t0, c0] = turboStops[i], [t1, c1] = turboStops[i+1];
+    if (t >= t0 && t <= t1) {
+      const f = (t - t0) / (t1 - t0);
+      const r = Math.round(c0[0] + f * (c1[0] - c0[0]));
+      const g = Math.round(c0[1] + f * (c1[1] - c0[1]));
+      const b = Math.round(c0[2] + f * (c1[2] - c0[2]));
+      return `rgb(${r},${g},${b})`;
+    }
+  }
+  return 'rgb(110,10,10)';
+}
+
+let tableauData = [];
+let sortKey = 'tn_prevue';
+let sortAsc = true;
+
+function rendreTableau() {
+  const tbody = document.getElementById('tableau-body');
+  const tnVals = tableauData.map(d => d.tn_prevue);
+  const txVals = tableauData.map(d => d.tx_prevue);
+  const tnMin = Math.min(...tnVals), tnMax = Math.max(...tnVals);
+  const txMin = Math.min(...txVals), txMax = Math.max(...txVals);
+
+  const sorted = [...tableauData].sort((a, b) => {
+    let va = a[sortKey], vb = b[sortKey];
+    if (typeof va === 'string') return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    return sortAsc ? va - vb : vb - va;
+  });
+
+  tbody.innerHTML = '';
+  sorted.forEach(row => {
+    const tn_t = (row.tn_prevue - tnMin) / (tnMax - tnMin || 1);
+    const tx_t = (row.tx_prevue - txMin) / (txMax - txMin || 1);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${row.lieu}</td>
+      <td class="temp" style="background:${turboColor(tn_t)}">${row.tn_prevue.toFixed(1)}°C</td>
+      <td class="temp" style="background:${turboColor(tx_t)}">${row.tx_prevue.toFixed(1)}°C</td>`;
+    tbody.appendChild(tr);
+  });
+
+  document.querySelectorAll('th').forEach(th => th.classList.remove('sorted'));
+  document.querySelector(`th[data-key="${sortKey}"]`).classList.add('sorted');
+}
+
+document.querySelectorAll('th[data-key]').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.key;
+    if (sortKey === key) sortAsc = !sortAsc;
+    else { sortKey = key; sortAsc = true; }
+    rendreTableau();
+  });
+});
+
 fetch('tableau_prevision.json')
   .then(r => r.json())
   .then(data => {
-    const tbody = document.getElementById('tableau-body');
-    tbody.innerHTML = '';
-    data.sort((a, b) => a.tn_prevue - b.tn_prevue);
-    data.forEach(row => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${row.lieu}</td><td class="temp">${row.tn_prevue.toFixed(1)}°C</td><td class="temp">${row.tx_prevue.toFixed(1)}°C</td>`;
-      tbody.appendChild(tr);
-    });
+    tableauData = data;
+    rendreTableau();
   })
   .catch(() => {
     document.getElementById('tableau-body').innerHTML = '<tr><td colspan="3">tableau_prevision.json introuvable</td></tr>';
