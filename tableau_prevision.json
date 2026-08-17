@@ -1,62 +1,7 @@
 [
   {
-    "lieu": "Châtillon-en-Diois - Cirque d'Archiane",
-    "tn_prevue": 17.410856481927738,
-    "tx_prevue": 29.771168812566827
-  },
-  {
-    "lieu": "Marignac-en-Diois",
-    "tn_prevue": 17.817352472023934,
-    "tx_prevue": 33.78321077097836
-  },
-  {
-    "lieu": "Saint-Julien-en-Quint",
-    "tn_prevue": 17.251438084512323,
-    "tx_prevue": 32.57240448889559
-  },
-  {
-    "lieu": "La Chapelle-en-Vercors -  Combe-de-l'Oscence",
-    "tn_prevue": 14.362646741670046,
-    "tx_prevue": 29.32231854846252
-  },
-  {
-    "lieu": "La-Chapelle-en-Vercors - Combe de Darbounouse",
-    "tn_prevue": 11.927190777708393,
-    "tx_prevue": 25.017367801435768
-  },
-  {
-    "lieu": "Lans-en-Vercors - Les Bruyères",
-    "tn_prevue": 13.58952468858978,
-    "tx_prevue": 28.54058480835275
-  },
-  {
-    "lieu": "Lans-en-Vercors - Les Allières",
-    "tn_prevue": 13.678046561545218,
-    "tx_prevue": 23.818200462536417
-  },
-  {
-    "lieu": "Rochechinard",
-    "tn_prevue": 19.883411336045068,
-    "tx_prevue": 31.608531651197108
-  },
-  {
-    "lieu": "Peyrus",
-    "tn_prevue": 19.962977683875952,
-    "tx_prevue": 34.12300154585358
-  },
-  {
-    "lieu": "Méaudre",
-    "tn_prevue": 14.079626136713259,
-    "tx_prevue": 27.856521757670176
-  },
-  {
-    "lieu": "Crête de la Moucherolle - Villard de Lans",
-    "tn_prevue": 12.042568314639094,
-    "tx_prevue": 17.53652897779666
-  },
-  {
     "lieu": "Doline de Chaud Clapier",
-    "tn_prevue": 13.775166081340354,
-    "tx_prevue": 26.113028394677194
+    "tn_prevue": 13.465798166332984,
+    "tx_prevue": 26.5828753218747
   }
 ]
