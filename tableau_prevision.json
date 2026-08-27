@@ -11,17 +11,17 @@
   },
   {
     "lieu": "Saint-Julien-en-Quint",
-    "tn_prevue": 17.876772505873372,
+    "tn_prevue": 17.694033053772174,
     "tx_prevue": 26.14926047067967
   },
   {
     "lieu": "La Chapelle-en-Vercors -  Combe-de-l'Oscence",
-    "tn_prevue": 8.89025759810782,
+    "tn_prevue": 15.28642379484276,
     "tx_prevue": 23.071785572576818
   },
   {
     "lieu": "La-Chapelle-en-Vercors - Combe de Darbounouse",
-    "tn_prevue": 10.155737998042135,
+    "tn_prevue": 13.646254344050368,
     "tx_prevue": 21.27889720169509
   },
   {
@@ -33,11 +33,6 @@
     "lieu": "Lans-en-Vercors - Les Allières",
     "tn_prevue": 12.49461996748083,
     "tx_prevue": 20.758848169766942
-  },
-  {
-    "lieu": "Rochechinard",
-    "tn_prevue": 18.9121488713169,
-    "tx_prevue": 26.47033141082375
   },
   {
     "lieu": "Peyrus",
@@ -56,7 +51,7 @@
   },
   {
     "lieu": "Aurel-Vercheny",
-    "tn_prevue": 17.973139403324595,
+    "tn_prevue": 17.320972938136247,
     "tx_prevue": 29.734977910707247
   },
   {
@@ -66,12 +61,12 @@
   },
   {
     "lieu": "Recoubeau-Jansac",
-    "tn_prevue": 20.07133050340755,
+    "tn_prevue": 20.071209168712418,
     "tx_prevue": 27.642887672092396
   },
   {
     "lieu": "Menglon",
-    "tn_prevue": 21.68767745543707,
+    "tn_prevue": 21.684252230445814,
     "tx_prevue": 26.912478157142463
   },
   {
@@ -81,12 +76,12 @@
   },
   {
     "lieu": "Aouste-sur-Sye (Saint-Pierre)",
-    "tn_prevue": 20.290056975331602,
+    "tn_prevue": 20.17675079509765,
     "tx_prevue": 29.390249335216904
   },
   {
     "lieu": "Crest",
-    "tn_prevue": 20.417439925553396,
+    "tn_prevue": 20.372278159997254,
     "tx_prevue": 29.526684155745016
   },
   {
@@ -101,7 +96,7 @@
   },
   {
     "lieu": "Doline de Chaud Clapier",
-    "tn_prevue": 13.73596763558652,
+    "tn_prevue": 13.990223227188356,
     "tx_prevue": 19.897165067159104
   }
 ]
