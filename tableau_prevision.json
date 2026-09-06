@@ -1,107 +1,107 @@
 [
   {
     "lieu": "Châtillon-en-Diois - Cirque d'Archiane",
-    "tn_prevue": 15.50987112284046,
-    "tx_prevue": 31.186430306236673
+    "tn_prevue": 17.44488083663611,
+    "tx_prevue": 30.478611449207662
   },
   {
     "lieu": "Marignac-en-Diois",
-    "tn_prevue": 15.056214620831867,
-    "tx_prevue": 32.1756732728083
+    "tn_prevue": 16.749873658405406,
+    "tx_prevue": 32.67880160652292
   },
   {
     "lieu": "Saint-Julien-en-Quint",
-    "tn_prevue": 13.136345985892934,
-    "tx_prevue": 33.5887410157426
+    "tn_prevue": 15.961466391703183,
+    "tx_prevue": 32.93640487846156
   },
   {
     "lieu": "La Chapelle-en-Vercors -  Combe-de-l'Oscence",
-    "tn_prevue": 9.516860239011585,
-    "tx_prevue": 27.737002735744912
+    "tn_prevue": 8.2089101429131,
+    "tx_prevue": 28.287145655458517
   },
   {
     "lieu": "La-Chapelle-en-Vercors - Combe de Darbounouse",
-    "tn_prevue": 5.117333827293964,
-    "tx_prevue": 25.422001659342012
+    "tn_prevue": 6.751603277288858,
+    "tx_prevue": 25.328527018320155
   },
   {
     "lieu": "Lans-en-Vercors - Les Bruyères",
-    "tn_prevue": 5.353775438693376,
-    "tx_prevue": 28.162068408351963
+    "tn_prevue": 11.452874538201504,
+    "tx_prevue": 28.678159082855842
   },
   {
     "lieu": "Lans-en-Vercors - Les Allières",
-    "tn_prevue": 12.818519191898877,
-    "tx_prevue": 24.565425643852677
+    "tn_prevue": 16.959079776556155,
+    "tx_prevue": 24.19034623643536
   },
   {
     "lieu": "Rochechinard",
-    "tn_prevue": 16.75407201676168,
-    "tx_prevue": 28.708537212781582
+    "tn_prevue": 21.883483028082818,
+    "tx_prevue": 31.502288692339214
   },
   {
     "lieu": "Peyrus",
-    "tn_prevue": 17.173063111099243,
-    "tx_prevue": 32.667907390857046
+    "tn_prevue": 18.810831235242265,
+    "tx_prevue": 34.64616492711105
   },
   {
     "lieu": "Méaudre",
-    "tn_prevue": 7.864668855225745,
-    "tx_prevue": 27.668085457920483
+    "tn_prevue": 10.423798567163402,
+    "tx_prevue": 28.462638450722054
   },
   {
     "lieu": "Crête de la Moucherolle - Villard de Lans",
-    "tn_prevue": 13.026143783546082,
-    "tx_prevue": 21.770255595508807
+    "tn_prevue": 15.303679002430954,
+    "tx_prevue": 20.870049215558765
   },
   {
     "lieu": "Aurel-Vercheny",
-    "tn_prevue": 13.319963256772077,
-    "tx_prevue": 34.59380055921587
+    "tn_prevue": 16.71473344733757,
+    "tx_prevue": 36.23633323740426
   },
   {
     "lieu": "Solaure-en-Diois",
-    "tn_prevue": 14.069941037834331,
-    "tx_prevue": 34.20235362959187
+    "tn_prevue": 16.732389544341807,
+    "tx_prevue": 35.23246595916711
   },
   {
     "lieu": "Recoubeau-Jansac",
-    "tn_prevue": 13.292077224275644,
-    "tx_prevue": 34.5733559646429
+    "tn_prevue": 16.25481367159556,
+    "tx_prevue": 34.67640164285875
   },
   {
     "lieu": "Menglon",
-    "tn_prevue": 13.757873473783874,
-    "tx_prevue": 33.617265610103395
+    "tn_prevue": 16.30902753799939,
+    "tx_prevue": 34.64800244794813
   },
   {
     "lieu": "Saint-Nazaire-le-Désert",
-    "tn_prevue": 16.02120388484036,
-    "tx_prevue": 32.35640647948478
+    "tn_prevue": 19.962725892586736,
+    "tx_prevue": 33.21566741015626
   },
   {
     "lieu": "Aouste-sur-Sye (Saint-Pierre)",
-    "tn_prevue": 14.602828141880076,
-    "tx_prevue": 35.17694368992238
+    "tn_prevue": 18.642201348177903,
+    "tx_prevue": 37.15306845629843
   },
   {
     "lieu": "Crest",
-    "tn_prevue": 18.13363084595863,
-    "tx_prevue": 34.830489989473875
+    "tn_prevue": 17.392096422251875,
+    "tx_prevue": 36.613990697628715
   },
   {
     "lieu": "Granges lès Beaumont",
-    "tn_prevue": 18.15372595471468,
-    "tx_prevue": 35.400087995931024
+    "tn_prevue": 19.813352363548415,
+    "tx_prevue": 36.89968234899958
   },
   {
     "lieu": "Engins",
-    "tn_prevue": 13.713293752393591,
-    "tx_prevue": 25.51025111433837
+    "tn_prevue": 17.666685723959635,
+    "tx_prevue": 26.98612728153048
   },
   {
     "lieu": "Doline de Chaud Clapier",
-    "tn_prevue": 9.48456114918374,
-    "tx_prevue": 25.419882998136117
+    "tn_prevue": 10.515676294192364,
+    "tx_prevue": 25.128015443576178
   }
 ]
