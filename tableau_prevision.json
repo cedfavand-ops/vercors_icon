@@ -1,107 +1,107 @@
 [
   {
     "lieu": "Châtillon-en-Diois - Cirque d'Archiane",
-    "tn_prevue": 11.264131254479109,
+    "tn_prevue": 11.189342478848255,
     "tx_prevue": 27.66223951701033
   },
   {
     "lieu": "Marignac-en-Diois",
-    "tn_prevue": 15.431628911868541,
+    "tn_prevue": 15.392414182662954,
     "tx_prevue": 26.909325851999203
   },
   {
     "lieu": "Saint-Julien-en-Quint",
-    "tn_prevue": 12.109031175487335,
+    "tn_prevue": 11.299551179000197,
     "tx_prevue": 27.38198491738959
   },
   {
     "lieu": "La Chapelle-en-Vercors -  Combe-de-l'Oscence",
-    "tn_prevue": 3.2691308516719637,
+    "tn_prevue": 3.1014087998681266,
     "tx_prevue": 22.00828569691872
   },
   {
     "lieu": "La-Chapelle-en-Vercors - Combe de Darbounouse",
-    "tn_prevue": -2.7810396168663143,
+    "tn_prevue": -3.167719318802815,
     "tx_prevue": 20.73574175894242
   },
   {
     "lieu": "Lans-en-Vercors - Les Bruyères",
-    "tn_prevue": 3.911525944892032,
+    "tn_prevue": 3.9142120867116974,
     "tx_prevue": 23.872880910995836
   },
   {
     "lieu": "Lans-en-Vercors - Les Allières",
-    "tn_prevue": 10.581931578381894,
+    "tn_prevue": 10.539361487264486,
     "tx_prevue": 20.177027770399413
   },
   {
     "lieu": "Rochechinard",
-    "tn_prevue": 13.863767234917944,
+    "tn_prevue": 13.789496852966673,
     "tx_prevue": 25.21482357627086
   },
   {
     "lieu": "Peyrus",
-    "tn_prevue": 15.164061024488664,
+    "tn_prevue": 14.955768593974472,
     "tx_prevue": 28.645023005473416
   },
   {
     "lieu": "Méaudre",
-    "tn_prevue": 6.733230403433822,
+    "tn_prevue": 6.5794973286083795,
     "tx_prevue": 22.636937600620072
   },
   {
     "lieu": "Crête de la Moucherolle - Villard de Lans",
-    "tn_prevue": 9.498071483684024,
+    "tn_prevue": 9.465801689794612,
     "tx_prevue": 16.13176350507726
   },
   {
     "lieu": "Aurel-Vercheny",
-    "tn_prevue": 9.74846710489075,
+    "tn_prevue": 9.417300903398708,
     "tx_prevue": 30.63823416009961
   },
   {
     "lieu": "Solaure-en-Diois",
-    "tn_prevue": 9.595908507604776,
+    "tn_prevue": 9.437358142903577,
     "tx_prevue": 29.985661389392455
   },
   {
     "lieu": "Recoubeau-Jansac",
-    "tn_prevue": 9.965435781611951,
+    "tn_prevue": 9.909995813761938,
     "tx_prevue": 30.056351930141933
   },
   {
     "lieu": "Menglon",
-    "tn_prevue": 10.655010601396288,
+    "tn_prevue": 10.512786226787124,
     "tx_prevue": 30.26453419130645
   },
   {
     "lieu": "Saint-Nazaire-le-Désert",
-    "tn_prevue": 12.797597378567769,
+    "tn_prevue": 12.720542182614356,
     "tx_prevue": 28.34078525630308
   },
   {
     "lieu": "Aouste-sur-Sye (Saint-Pierre)",
-    "tn_prevue": 12.134731789813937,
+    "tn_prevue": 11.862523854695795,
     "tx_prevue": 30.895709161033825
   },
   {
     "lieu": "Crest",
-    "tn_prevue": 14.504952899552132,
+    "tn_prevue": 14.4410617837656,
     "tx_prevue": 30.374743258211346
   },
   {
     "lieu": "Granges lès Beaumont",
-    "tn_prevue": 13.89877116067025,
+    "tn_prevue": 13.71747424043031,
     "tx_prevue": 31.272909500235656
   },
   {
     "lieu": "Engins",
-    "tn_prevue": 11.845321457032682,
+    "tn_prevue": 11.679978597434818,
     "tx_prevue": 23.05921071017661
   },
   {
     "lieu": "Doline de Chaud Clapier",
-    "tn_prevue": 4.059811062654701,
+    "tn_prevue": 3.969140206685725,
     "tx_prevue": 18.805275787114123
   }
 ]
