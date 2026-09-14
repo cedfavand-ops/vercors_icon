@@ -1,107 +1,102 @@
 [
   {
     "lieu": "Châtillon-en-Diois - Cirque d'Archiane",
-    "tn_prevue": 11.189342478848255,
-    "tx_prevue": 27.66223951701033
+    "tn_prevue": 11.672546809535493,
+    "tx_prevue": 26.673341131941488
   },
   {
     "lieu": "Marignac-en-Diois",
-    "tn_prevue": 15.392414182662954,
-    "tx_prevue": 26.909325851999203
+    "tn_prevue": 14.789814989970477,
+    "tx_prevue": 27.628457404985625
   },
   {
     "lieu": "Saint-Julien-en-Quint",
-    "tn_prevue": 11.299551179000197,
-    "tx_prevue": 27.38198491738959
+    "tn_prevue": 10.755018709409176,
+    "tx_prevue": 28.39251979521373
   },
   {
     "lieu": "La Chapelle-en-Vercors -  Combe-de-l'Oscence",
-    "tn_prevue": 3.1014087998681266,
-    "tx_prevue": 22.00828569691872
+    "tn_prevue": 5.754156055820589,
+    "tx_prevue": 25.06616162473633
   },
   {
     "lieu": "La-Chapelle-en-Vercors - Combe de Darbounouse",
-    "tn_prevue": -3.167719318802815,
-    "tx_prevue": 20.73574175894242
+    "tn_prevue": 2.1447339268405683,
+    "tx_prevue": 21.59767423950364
   },
   {
     "lieu": "Lans-en-Vercors - Les Bruyères",
-    "tn_prevue": 3.9142120867116974,
-    "tx_prevue": 23.872880910995836
+    "tn_prevue": 4.308105469976981,
+    "tx_prevue": 25.16785760792497
   },
   {
     "lieu": "Lans-en-Vercors - Les Allières",
-    "tn_prevue": 10.539361487264486,
-    "tx_prevue": 20.177027770399413
+    "tn_prevue": 10.400673122016862,
+    "tx_prevue": 20.883476650883217
   },
   {
     "lieu": "Rochechinard",
-    "tn_prevue": 13.789496852966673,
-    "tx_prevue": 25.21482357627086
+    "tn_prevue": 14.145385785839665,
+    "tx_prevue": 28.083279245030667
   },
   {
     "lieu": "Peyrus",
-    "tn_prevue": 14.955768593974472,
-    "tx_prevue": 28.645023005473416
+    "tn_prevue": 14.880841318190692,
+    "tx_prevue": 29.68311850076548
   },
   {
     "lieu": "Méaudre",
-    "tn_prevue": 6.5794973286083795,
-    "tx_prevue": 22.636937600620072
+    "tn_prevue": 5.588645133626622,
+    "tx_prevue": 24.800470728632334
   },
   {
     "lieu": "Crête de la Moucherolle - Villard de Lans",
-    "tn_prevue": 9.465801689794612,
-    "tx_prevue": 16.13176350507726
-  },
-  {
-    "lieu": "Aurel-Vercheny",
-    "tn_prevue": 9.417300903398708,
-    "tx_prevue": 30.63823416009961
+    "tn_prevue": 9.813322448730165,
+    "tx_prevue": 17.79843211297283
   },
   {
     "lieu": "Solaure-en-Diois",
-    "tn_prevue": 9.437358142903577,
-    "tx_prevue": 29.985661389392455
+    "tn_prevue": 10.72922036846579,
+    "tx_prevue": 30.203010941909746
   },
   {
     "lieu": "Recoubeau-Jansac",
-    "tn_prevue": 9.909995813761938,
-    "tx_prevue": 30.056351930141933
+    "tn_prevue": 10.842265825541576,
+    "tx_prevue": 30.100272968093243
   },
   {
     "lieu": "Menglon",
-    "tn_prevue": 10.512786226787124,
-    "tx_prevue": 30.26453419130645
+    "tn_prevue": 11.685816641916025,
+    "tx_prevue": 29.988704683569427
   },
   {
     "lieu": "Saint-Nazaire-le-Désert",
-    "tn_prevue": 12.720542182614356,
-    "tx_prevue": 28.34078525630308
+    "tn_prevue": 13.176803858327096,
+    "tx_prevue": 28.523286887573995
   },
   {
     "lieu": "Aouste-sur-Sye (Saint-Pierre)",
-    "tn_prevue": 11.862523854695795,
-    "tx_prevue": 30.895709161033825
+    "tn_prevue": 12.39266906342802,
+    "tx_prevue": 31.583531652634115
   },
   {
     "lieu": "Crest",
-    "tn_prevue": 14.4410617837656,
-    "tx_prevue": 30.374743258211346
+    "tn_prevue": 14.530197495150281,
+    "tx_prevue": 31.2194888262855
   },
   {
     "lieu": "Granges lès Beaumont",
-    "tn_prevue": 13.71747424043031,
-    "tx_prevue": 31.272909500235656
+    "tn_prevue": 14.025396981489692,
+    "tx_prevue": 32.24670310183885
   },
   {
     "lieu": "Engins",
-    "tn_prevue": 11.679978597434818,
-    "tx_prevue": 23.05921071017661
+    "tn_prevue": 12.66416179598718,
+    "tx_prevue": 24.018871974506922
   },
   {
     "lieu": "Doline de Chaud Clapier",
-    "tn_prevue": 3.969140206685725,
-    "tx_prevue": 18.805275787114123
+    "tn_prevue": 3.851431187926006,
+    "tx_prevue": 21.066676633059874
   }
 ]
