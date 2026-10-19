@@ -46,6 +46,11 @@
   <button id="btn-tn" class="active">Température min</button>
   <button id="btn-tx">Température max</button>
 </div>
+<div class="controls" style="padding-top:0;">
+  <label style="font-size:0.85rem; color:#333;">
+    <input type="checkbox" id="toggle-taf"> Afficher les trous à froid potentiels non mesurés (zones bleues)
+  </label>
+</div>
 <p class="legend" id="date-tn" style="display:block;"></p>
 <p class="legend" id="date-tx" style="display:none;"></p>
 
@@ -72,13 +77,32 @@
 // Dates dynamiques
 // ============================================================
 const moisFr = ["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
-const aujourd = new Date();
-const demain = new Date(aujourd);
-demain.setDate(demain.getDate() + 1);
-document.getElementById('date-tn').textContent =
-  `Nuit du ${aujourd.getDate()} au ${demain.getDate()} ${moisFr[demain.getMonth()]}`;
-document.getElementById('date-tx').textContent =
-  `Après-midi du ${demain.getDate()} ${moisFr[demain.getMonth()]}`;
+let aujourd = new Date();   // repli si meta.json est absent
+function afficherDatesPrevision(debut) {
+  const demain = new Date(debut);
+  demain.setDate(demain.getDate() + 1);
+  document.getElementById('date-tn').textContent =
+    `Nuit du ${debut.getDate()} au ${demain.getDate()} ${moisFr[demain.getMonth()]}`;
+  document.getElementById('date-tx').textContent =
+    `Après-midi du ${demain.getDate()} ${moisFr[demain.getMonth()]}`;
+}
+afficherDatesPrevision(aujourd);
+// Les dates viennent de la fenêtre de prévision réellement calculée par le pipeline,
+// pas de l'heure de consultation (sinon décalage d'un jour après minuit).
+fetch('meta.json?_=' + Date.now())
+  .then(r => r.json())
+  .then(m => {
+    const [y, mo, d] = m.nuit_debut.split('-').map(Number);
+    aujourd = new Date(y, mo - 1, d, 12);
+    afficherDatesPrevision(aujourd);
+    if (m.genere_le) {
+      const g = new Date(m.genere_le);
+      document.getElementById('date-info').textContent =
+        "Généré le " + g.toLocaleDateString('fr-FR', {weekday: 'long', day: 'numeric', month: 'long'}) +
+        " à " + g.toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'});
+    }
+  })
+  .catch(() => {});
 
 const map = L.map('map').setView([44.95, 5.35], 10);
 L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
@@ -100,6 +124,21 @@ fetch('bounds.json')
     overlayTX = L.imageOverlay('carte_tx.png', bTX, {opacity: 0.75});
     map.fitBounds(bTN);
   });
+
+// Couche des trous à froid potentiels non mesurés (optionnelle)
+let overlayTAF = null;
+fetch('zones_taf_bounds.json')
+  .then(r => r.json())
+  .then(b => {
+    overlayTAF = L.imageOverlay('zones_taf.png', [[b.lat_min, b.lon_min], [b.lat_max, b.lon_max]], {opacity: 1.0});
+  })
+  .catch(() => { /* couche optionnelle, pas grave si absente */ });
+
+document.getElementById('toggle-taf').addEventListener('change', (e) => {
+  if (!overlayTAF) return;
+  if (e.target.checked) { overlayTAF.addTo(map); }
+  else { map.removeLayer(overlayTAF); }
+});
 
 // ============================================================
 // Charger les grilles de valeurs (survol + isolignes)
