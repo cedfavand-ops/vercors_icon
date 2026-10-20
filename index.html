@@ -45,14 +45,11 @@
 <div class="controls">
   <button id="btn-tn" class="active">Température min</button>
   <button id="btn-tx">Température max</button>
-</div>
-<div class="controls" style="padding-top:0;">
-  <label style="font-size:0.85rem; color:#333;">
-    <input type="checkbox" id="toggle-taf"> Afficher les trous à froid potentiels non mesurés (zones bleues)
-  </label>
+  <button id="btn-taf">Creux à froid potentiels</button>
 </div>
 <p class="legend" id="date-tn" style="display:block;"></p>
 <p class="legend" id="date-tx" style="display:none;"></p>
+<p class="legend" id="date-taf" style="display:none;">Cuvettes du relief où l'air froid peut s'accumuler la nuit (plus le bleu est foncé, plus le creux est profond). Zones potentielles, non mesurées : ce n'est pas une prévision.</p>
 
 <div id="map">
   <div class="hover-value" id="hover-box"></div>
@@ -125,31 +122,18 @@ fetch('bounds.json')
     map.fitBounds(bTN);
   });
 
-// Couche des trous à froid potentiels non mesurés (optionnelle)
-// Chargée à la demande, au moment de cocher la case (sans cache), pour qu'un ancien
-// échec (404 mis en cache avant la publication des fichiers) ne bloque pas la case.
+// Couche des creux à froid potentiels : chargée à la demande (sans cache) quand on
+// ouvre l'onglet "Creux à froid potentiels".
 let overlayTAF = null;
-const caseTAF = document.getElementById('toggle-taf');
-caseTAF.addEventListener('change', async (e) => {
-  if (!e.target.checked) {
-    if (overlayTAF) map.removeLayer(overlayTAF);
-    return;
-  }
-  try {
-    if (!overlayTAF) {
-      const r = await fetch('zones_taf_bounds.json?_=' + Date.now(), {cache: 'no-store'});
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      const b = await r.json();
-      overlayTAF = L.imageOverlay('zones_taf.png?_=' + Date.now(),
-        [[b.lat_min, b.lon_min], [b.lat_max, b.lon_max]], {opacity: 1.0});
-    }
-    overlayTAF.addTo(map);
-    overlayTAF.bringToFront();
-  } catch (err) {
-    e.target.checked = false;
-    alert("Couche des trous à froid potentiels indisponible (" + err.message + ").");
-  }
-});
+async function chargerCoucheTAF() {
+  if (overlayTAF) return overlayTAF;
+  const r = await fetch('zones_taf_bounds.json?_=' + Date.now(), {cache: 'no-store'});
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  const b = await r.json();
+  overlayTAF = L.imageOverlay('zones_taf.png?_=' + Date.now(),
+    [[b.lat_min, b.lon_min], [b.lat_max, b.lon_max]], {opacity: 1.0});
+  return overlayTAF;
+}
 
 // ============================================================
 // Charger les grilles de valeurs (survol + isolignes)
@@ -175,6 +159,7 @@ function valeurGrille(grille, lat, lon) {
 // Survol de la carte : afficher la valeur
 const hoverBox = document.getElementById('hover-box');
 map.on('mousemove', (e) => {
+  if (coucheActive === 'taf') { hoverBox.style.display = 'none'; return; }
   const grille = coucheActive === 'tn' ? grilleTN : grilleTX;
   if (!grille) return;
   const v = valeurGrille(grille, e.latlng.lat, e.latlng.lng);
@@ -198,7 +183,8 @@ function gridToLatLng(x, y, grille) {
 }
 
 function dessinerIsolignes() {
-  if (isolignesLayer) { map.removeLayer(isolignesLayer); }
+  if (isolignesLayer) { map.removeLayer(isolignesLayer); isolignesLayer = null; }
+  if (coucheActive === 'taf') return;
 
   const grille = coucheActive === 'tn' ? grilleTN : grilleTX;
   if (!grille) return;
@@ -238,27 +224,28 @@ function dessinerIsolignes() {
   isolignesLayer = groupe.addTo(map);
 }
 
-document.getElementById('btn-tn').addEventListener('click', () => {
-  if (overlayTX && map.hasLayer(overlayTX)) map.removeLayer(overlayTX);
-  if (overlayTN) overlayTN.addTo(map);
-  document.getElementById('btn-tn').classList.add('active');
-  document.getElementById('btn-tx').classList.remove('active');
-  document.getElementById('date-tn').style.display = 'block';
-  document.getElementById('date-tx').style.display = 'none';
-  coucheActive = 'tn';
+async function afficherMode(mode) {
+  if (mode === 'taf') {
+    try { await chargerCoucheTAF(); }
+    catch (err) {
+      alert("Couche des creux à froid indisponible (" + err.message + ").");
+      return;
+    }
+  }
+  [overlayTN, overlayTX, overlayTAF].forEach(o => { if (o && map.hasLayer(o)) map.removeLayer(o); });
+  const couche = {tn: overlayTN, tx: overlayTX, taf: overlayTAF}[mode];
+  if (couche) couche.addTo(map);
+  ['tn', 'tx', 'taf'].forEach(m => {
+    document.getElementById('btn-' + m).classList.toggle('active', m === mode);
+    document.getElementById('date-' + m).style.display = (m === mode) ? 'block' : 'none';
+  });
+  coucheActive = mode;
+  hoverBox.style.display = 'none';
   dessinerIsolignes();
-});
-
-document.getElementById('btn-tx').addEventListener('click', () => {
-  if (overlayTN && map.hasLayer(overlayTN)) map.removeLayer(overlayTN);
-  if (overlayTX) overlayTX.addTo(map);
-  document.getElementById('btn-tx').classList.add('active');
-  document.getElementById('btn-tn').classList.remove('active');
-  document.getElementById('date-tn').style.display = 'none';
-  document.getElementById('date-tx').style.display = 'block';
-  coucheActive = 'tx';
-  dessinerIsolignes();
-});
+}
+document.getElementById('btn-tn').addEventListener('click', () => afficherMode('tn'));
+document.getElementById('btn-tx').addEventListener('click', () => afficherMode('tx'));
+document.getElementById('btn-taf').addEventListener('click', () => afficherMode('taf'));
 
 // Palette "Turbo" simplifiée (approximation par points de contrôle, interpolée)
 const turboStops = [
