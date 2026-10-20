@@ -126,18 +126,29 @@ fetch('bounds.json')
   });
 
 // Couche des trous à froid potentiels non mesurés (optionnelle)
+// Chargée à la demande, au moment de cocher la case (sans cache), pour qu'un ancien
+// échec (404 mis en cache avant la publication des fichiers) ne bloque pas la case.
 let overlayTAF = null;
-fetch('zones_taf_bounds.json')
-  .then(r => r.json())
-  .then(b => {
-    overlayTAF = L.imageOverlay('zones_taf.png', [[b.lat_min, b.lon_min], [b.lat_max, b.lon_max]], {opacity: 1.0});
-  })
-  .catch(() => { /* couche optionnelle, pas grave si absente */ });
-
-document.getElementById('toggle-taf').addEventListener('change', (e) => {
-  if (!overlayTAF) return;
-  if (e.target.checked) { overlayTAF.addTo(map); }
-  else { map.removeLayer(overlayTAF); }
+const caseTAF = document.getElementById('toggle-taf');
+caseTAF.addEventListener('change', async (e) => {
+  if (!e.target.checked) {
+    if (overlayTAF) map.removeLayer(overlayTAF);
+    return;
+  }
+  try {
+    if (!overlayTAF) {
+      const r = await fetch('zones_taf_bounds.json?_=' + Date.now(), {cache: 'no-store'});
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const b = await r.json();
+      overlayTAF = L.imageOverlay('zones_taf.png?_=' + Date.now(),
+        [[b.lat_min, b.lon_min], [b.lat_max, b.lon_max]], {opacity: 1.0});
+    }
+    overlayTAF.addTo(map);
+    overlayTAF.bringToFront();
+  } catch (err) {
+    e.target.checked = false;
+    alert("Couche des trous à froid potentiels indisponible (" + err.message + ").");
+  }
 });
 
 // ============================================================
